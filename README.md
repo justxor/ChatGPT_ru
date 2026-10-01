@@ -11,6 +11,46 @@
 
 ---
 
+## Что полезного в репозитории
+
+```mermaid
+flowchart LR
+    R(["📘 ChatGPT PRO<br/>один README"]):::model
+    subgraph TH["🧠 Понять"]
+        T1["Теория LLM<br/>токены · контекст · галлюцинации"]:::ctx
+        T2["13 модулей<br/>от промптинга до агентов"]:::ctx
+    end
+    subgraph PR["🛠 Сделать"]
+        P1["🧪 Практика<br/>в каждом модуле"]:::tool
+        P2["10 лабораторных<br/>цель · шаги · критерии"]:::tool
+        P3["🏆 Итоговый проект<br/>автоматизация своей задачи"]:::tool
+    end
+    subgraph US["⚡ Использовать каждый день"]
+        U1["15 рецептов<br/>готовые промпты"]:::user
+        U2["Шпаргалка<br/>фразы-усилители"]:::user
+        U3["Антипаттерны<br/>и частые проблемы"]:::user
+    end
+    subgraph CK["✅ Проверить себя"]
+        C1["6 вопросов<br/>с ответами"]:::out
+        C2["Чек-лист<br/>прогресса"]:::out
+    end
+    R --> TH --> PR --> CK
+    R --> US
+    US -. "применяйте в лабах" .-> PR
+    style TH fill:none,stroke:#7c3aed,stroke-width:2px,stroke-dasharray:6 4
+    style PR fill:none,stroke:#16a34a,stroke-width:2px,stroke-dasharray:6 4
+    style US fill:none,stroke:#2563eb,stroke-width:2px,stroke-dasharray:6 4
+    style CK fill:none,stroke:#db2777,stroke-width:2px,stroke-dasharray:6 4
+    classDef user fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#0b1f44
+    classDef ctx fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#1e0b44
+    classDef model fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#3b2300
+    classDef tool fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#052e16
+    classDef out fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#3f0420
+    classDef warn fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#450a0a
+```
+
+**Как проходить:** теория → модуль → практика из модуля → лаба. Рецепты и шпаргалку держите под рукой с первого дня.
+
 ## Содержание
 
 | Старт | Курс | Практика | Справочник |
@@ -61,21 +101,29 @@ ChatGPT собирает **контекст** из нескольких исто
 
 ```mermaid
 flowchart LR
-    U["👤 Ваш запрос<br/>текст · файлы · фото · голос"] --> C
-    subgraph C["📥 Контекст"]
-        C1["Персонализация<br/>и инструкции"]
-        C2["Память"]
-        C3["Файлы и инструкции<br/>проекта"]
-        C4["История чата"]
+    U(["👤 Ваш запрос<br/>текст · файлы · фото · голос"]):::user --> C
+    subgraph C["📥 1. Контекст"]
+        direction TB
+        C1["⚙️ Персонализация"]:::ctx
+        C2["🧠 Память"]:::ctx
+        C3["📁 Проект<br/>файлы и инструкции"]:::ctx
+        C4["💬 История чата"]:::ctx
     end
-    C --> M{"🧠 Модель<br/>быстрая или думающая"}
-    M --> T1["🌐 Поиск"]
-    M --> T2["📊 Анализ данных<br/>Python"]
-    M --> T3["🎨 Изображения"]
-    M --> T4["🔌 Коннекторы<br/>Drive · почта · CRM"]
-    M --> T5["🤖 Агент<br/>действия в браузере и приложениях"]
-    T1 & T2 & T3 & T4 & T5 --> R["📝 Ответ<br/>текст · таблица · файл · график"]
-    M --> R
+    C --> M{"🤖 2. Модель<br/>быстрая или думающая"}:::model
+    M -- "нужны свежие факты" --> T1["🌐 Поиск"]:::tool
+    M -- "нужно посчитать" --> T2["📊 Python и данные"]:::tool
+    M -- "нужна картинка" --> T3["🎨 Изображения"]:::tool
+    M -- "нужны ваши сервисы" --> T4["🔌 Коннекторы"]:::tool
+    M -- "нужно действовать" --> T5["🕹 Агент"]:::tool
+    T1 & T2 & T3 & T4 & T5 -- "результаты" --> M
+    M == "3. Ответ" ==> R(["📝 Текст · таблица · файл · график"]):::out
+    style C fill:none,stroke:#7c3aed,stroke-width:2px,stroke-dasharray:6 4
+    classDef user fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#0b1f44
+    classDef ctx fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#1e0b44
+    classDef model fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#3b2300
+    classDef tool fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#052e16
+    classDef out fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#3f0420
+    classDef warn fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#450a0a
 ```
 
 ### Окно контекста — главный ресурс
@@ -83,10 +131,19 @@ flowchart LR
 Модель «помнит» только то, что поместилось в контекст текущего чата (плюс память и инструкции). Длинный чат с десятком тем — источник путаницы и ошибок.
 
 ```mermaid
-flowchart TB
-    Q{"Чат стал длинным<br/>или ответы хуже?"} -- "новая тема" --> N["🆕 Новый чат"]
-    Q -- "та же задача" --> S["📌 Попросить краткое резюме<br/>и начать новый чат с ним"]
-    Q -- "постоянная работа" --> P["📁 Проект<br/>файлы и инструкции всегда под рукой"]
+flowchart LR
+    W["🪟 Окно контекста<br/>ограничено по размеру"]:::ctx --> Q{"Ответы стали хуже<br/>или чат очень длинный?"}:::model
+    Q -- "новая тема" --> N(["🆕 Новый чат"]):::tool
+    Q -- "та же задача" --> S["📌 «Сожми диалог в 10 пунктов»"]:::user
+    S --> N2(["🆕 Новый чат с резюме"]):::tool
+    Q -- "постоянная работа" --> P(["📁 Проект<br/>файлы и инструкции всегда под рукой"]):::tool
+    Q -- "всё в порядке" --> K(["✅ Продолжать"]):::out
+    classDef user fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#0b1f44
+    classDef ctx fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#1e0b44
+    classDef model fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#3b2300
+    classDef tool fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#052e16
+    classDef out fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#3f0420
+    classDef warn fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#450a0a
 ```
 
 ## Теория: как работает языковая модель
@@ -103,11 +160,18 @@ flowchart TB
 
 ```mermaid
 flowchart LR
-    C["📜 Контекст<br/>инструкции + чат + файлы"] --> M["🧠 Нейросеть"]
-    M --> P["📊 Вероятности<br/>«Москва» 92%<br/>«город» 5%<br/>«столица» 2%"]
-    P --> S["🎲 Выбор токена"]
-    S --> A["➕ Добавить к ответу"]
-    A -- "повторять до конца ответа" --> C
+    C["📜 Контекст<br/>инструкции + чат + файлы"]:::ctx --> T["✂️ Токенизация<br/>[Сто][лица][ Рос][сии]"]:::user
+    T --> M["🧠 Нейросеть<br/>миллиарды параметров"]:::model
+    M --> P["📊 Вероятности следующего токена<br/>«Москва» 92% · «город» 5% · «столица» 2%"]:::tool
+    P --> S{"🎲 Выбор токена"}:::model
+    S --> A["➕ Добавить к ответу"]:::out
+    A -. "повторять, пока ответ не готов" .-> C
+    classDef user fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#0b1f44
+    classDef ctx fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#1e0b44
+    classDef model fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#3b2300
+    classDef tool fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#052e16
+    classDef out fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#3f0420
+    classDef warn fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#450a0a
 ```
 
 Отсюда три практических вывода:
@@ -120,10 +184,26 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    D["📚 Предобучение<br/>огромный корпус текстов"] --> F["🎯 Дообучение<br/>на примерах диалогов"]
-    F --> H["👍 Обучение с обратной связью<br/>полезно · честно · безопасно"]
-    H --> R["💬 Модель в ChatGPT"]
-    R -. "свежие данные" .-> T["🌐 Поиск · 📎 файлы · 🔌 коннекторы"]
+    subgraph TR["🏗 Обучение · один раз"]
+        direction LR
+        D1["📚 Предобучение<br/>огромный корпус текстов"]:::ctx --> F["🎯 Дообучение<br/>примеры диалогов"]:::ctx --> H["👍 Обратная связь<br/>полезно · честно · безопасно"]:::ctx
+    end
+    subgraph RT["⚡ Работа · каждый запрос"]
+        direction LR
+        R["💬 Модель в ChatGPT"]:::model
+        T["🌐 Поиск · 📎 Файлы · 🔌 Коннекторы"]:::tool
+    end
+    H --> R
+    X["📅 Дата среза знаний"]:::warn -. "дальше модель не знает сама" .-> R
+    T -- "свежие и ваши данные" --> R
+    style TR fill:none,stroke:#7c3aed,stroke-width:2px,stroke-dasharray:6 4
+    style RT fill:none,stroke:#16a34a,stroke-width:2px,stroke-dasharray:6 4
+    classDef user fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#0b1f44
+    classDef ctx fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#1e0b44
+    classDef model fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#3b2300
+    classDef tool fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#052e16
+    classDef out fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#3f0420
+    classDef warn fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#450a0a
 ```
 
 У модели есть **дата среза знаний**: о событиях позже неё она знает только из поиска, ваших файлов и коннекторов. Для всего, что меняется (цены, законы, версии, новости), — включайте поиск или давайте источник.
@@ -187,7 +267,21 @@ flowchart LR
     subgraph P["🔴 PRO"]
         M11["11 Агенты"] --> M12["12 Codex и API"] --> M13["13 Безопасность"]
     end
-    B --> W --> E --> P
+    B --> W --> E --> P --> F(["🏆 Итоговый проект"]):::out
+    class M1,M2,M3 tool
+    class M4,M5,M6,M7 model
+    class M8,M9,M10 ctx
+    class M11,M12,M13 warn
+    style B fill:none,stroke:#16a34a,stroke-width:2px,stroke-dasharray:6 4
+    style W fill:none,stroke:#d97706,stroke-width:2px,stroke-dasharray:6 4
+    style E fill:none,stroke:#7c3aed,stroke-width:2px,stroke-dasharray:6 4
+    style P fill:none,stroke:#dc2626,stroke-width:2px,stroke-dasharray:6 4
+    classDef user fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#0b1f44
+    classDef ctx fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#1e0b44
+    classDef model fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#3b2300
+    classDef tool fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#052e16
+    classDef out fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#3f0420
+    classDef warn fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#450a0a
 ```
 
 ---
@@ -198,12 +292,19 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    Q1{"Нужен ответ<br/>за секунды?"} -- да --> F["⚡ Быстрая модель"]
-    Q1 -- нет --> Q2{"Много шагов, логика,<br/>код, расчёты?"}
-    Q2 -- да --> T["🧠 Думающая модель"]
-    Q2 -- нет --> Q3{"Нужны свежие факты<br/>из многих источников?"}
-    Q3 -- да --> D["🔎 Deep Research"]
-    Q3 -- нет --> F
+    S(["❓ Новая задача"]):::user --> Q1{"Нужен ответ<br/>за секунды?"}:::model
+    Q1 -- "да" --> F["⚡ Быстрая модель<br/>перевод · переписать · простой вопрос"]:::tool
+    Q1 -- "нет" --> Q2{"Много шагов, логика,<br/>код, расчёты?"}:::model
+    Q2 -- "да" --> T["🧠 Думающая модель<br/>анализ · стратегия · код"]:::ctx
+    Q2 -- "нет" --> Q3{"Нужны свежие факты<br/>из многих источников?"}:::model
+    Q3 -- "да" --> D["🔎 Deep Research<br/>отчёт со ссылками"]:::out
+    Q3 -- "нет" --> F
+    classDef user fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#0b1f44
+    classDef ctx fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#1e0b44
+    classDef model fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#3b2300
+    classDef tool fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#052e16
+    classDef out fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#3f0420
+    classDef warn fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#450a0a
 ```
 
 **Практика:** задайте одну и ту же сложную задачу быстрой и думающей модели и сравните глубину ответа и время.
@@ -234,11 +335,17 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    A["1 Исследуй<br/>факты и вопросы"] --> B["2 Структура<br/>план и тезисы"]
-    B --> C["3 Черновик"]
-    C --> D["4 Критика<br/>по чек-листу"]
-    D --> E["5 Финал"]
+    A["1️⃣ Исследуй<br/>факты и вопросы"]:::user --> B["2️⃣ Структура<br/>план и тезисы"]:::ctx
+    B --> C["3️⃣ Черновик"]:::model
+    C --> D{"4️⃣ Критика<br/>по чек-листу"}:::warn
     D -- "есть замечания" --> C
+    D -- "всё ок" --> E(["5️⃣ Финал"]):::out
+    classDef user fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#0b1f44
+    classDef ctx fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#1e0b44
+    classDef model fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#3b2300
+    classDef tool fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#052e16
+    classDef out fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#3f0420
+    classDef warn fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#450a0a
 ```
 
 **Структурированный вывод.** Когда результат пойдёт в таблицу или код — просите строгий формат:
@@ -301,12 +408,27 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    P["📁 Проект «Запуск продукта»"] --> I["📜 Инструкции<br/>роль · тон · правила"]
-    P --> F["📎 Файлы<br/>бриф · исследования · гайдлайны"]
-    P --> C1["💬 Чат: позиционирование"]
-    P --> C2["💬 Чат: лендинг"]
-    P --> C3["💬 Чат: email-цепочка"]
-    I & F -.-> C1 & C2 & C3
+    P(["📁 Проект «Запуск продукта»"]):::user
+    subgraph K["Всегда в контексте"]
+        I["📜 Инструкции<br/>роль · тон · правила"]:::ctx
+        F["📎 Файлы<br/>бриф · исследования · гайдлайны"]:::ctx
+    end
+    subgraph CH["Чаты проекта"]
+        C1["💬 Позиционирование"]:::tool
+        C2["💬 Лендинг"]:::tool
+        C3["💬 Email-цепочка"]:::tool
+    end
+    P --> K
+    P --> CH
+    K -. "учитываются в каждом чате" .-> CH
+    style K fill:none,stroke:#7c3aed,stroke-width:2px,stroke-dasharray:6 4
+    style CH fill:none,stroke:#16a34a,stroke-width:2px,stroke-dasharray:6 4
+    classDef user fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#0b1f44
+    classDef ctx fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#1e0b44
+    classDef model fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#3b2300
+    classDef tool fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#052e16
+    classDef out fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#3f0420
+    classDef warn fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#450a0a
 ```
 
 **Правило:** одна постоянная задача — один проект. Разовые вопросы — в обычном чате.
@@ -385,12 +507,22 @@ Custom GPT — ваш ассистент с инструкциями, файла
 
 ```mermaid
 flowchart LR
-    I["📜 Инструкции<br/>роль · процесс · формат"] --> G["🤖 Custom GPT"]
-    K["📚 Знания<br/>PDF · таблицы · гайды"] --> G
-    A["🔌 Actions<br/>внешние API"] --> G
-    G --> U1["👤 Вы"]
-    G --> U2["👥 Команда"]
-    G --> U3["🌍 Магазин GPT"]
+    subgraph IN["🧩 Из чего собран"]
+        I["📜 Инструкции<br/>роль · процесс · формат"]:::ctx
+        K["📚 Знания<br/>PDF · таблицы · гайды"]:::ctx
+        A["🔌 Actions<br/>внешние API"]:::ctx
+    end
+    IN --> G{{"🤖 Custom GPT"}}:::model
+    G --> U1["👤 Только вы"]:::user
+    G --> U2["👥 Команда по ссылке"]:::user
+    G --> U3["🌍 Магазин GPT"]:::out
+    style IN fill:none,stroke:#7c3aed,stroke-width:2px,stroke-dasharray:6 4
+    classDef user fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#0b1f44
+    classDef ctx fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#1e0b44
+    classDef model fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#3b2300
+    classDef tool fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#052e16
+    classDef out fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#3f0420
+    classDef warn fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#450a0a
 ```
 
 **Шаблон инструкций:**
@@ -423,18 +555,23 @@ flowchart LR
 
 ```mermaid
 sequenceDiagram
-    actor U as Вы
-    participant A as Агент ChatGPT
-    participant W as Сайты и приложения
+    autonumber
+    actor U as 👤 Вы
+    participant A as 🤖 Агент ChatGPT
+    participant W as 🌐 Сайты и приложения
     U->>A: Найди 5 отелей в Казани до 6000 ₽ рядом с центром, сравни
-    A->>W: поиск, открытие страниц, фильтры
-    W-->>A: цены, отзывы, условия
+    rect rgba(37, 99, 235, 0.12)
+        A->>W: поиск, открытие страниц, фильтры
+        W-->>A: цены, отзывы, условия
+    end
     A-->>U: таблица сравнения и рекомендация
     U->>A: Бронируй второй вариант
-    A->>U: Подтвердите оплату и данные
-    U-->>A: Подтверждаю
+    rect rgba(220, 38, 38, 0.12)
+        A->>U: ⚠️ Подтвердите оплату и данные
+        U-->>A: Подтверждаю
+    end
     A->>W: оформление
-    A-->>U: готово, детали брони
+    A-->>U: ✅ готово, детали брони
 ```
 
 **Правила работы с агентом:**
@@ -452,12 +589,19 @@ sequenceDiagram
 
 ```mermaid
 flowchart LR
-    T["📝 Задача<br/>issue · описание"] --> C["🤖 Codex"]
-    C --> R["📦 Репозиторий<br/>в изолированной среде"]
-    R --> X["🧪 Тесты и линтер"]
+    T(["📝 Задача<br/>issue · критерии готовности"]):::user --> C["🤖 Codex"]:::model
+    A["📄 AGENTS.md<br/>сборка · тесты · стиль"]:::ctx -. "инструкции" .-> C
+    C --> R["📦 Репозиторий<br/>изолированная среда"]:::ctx
+    R --> X{"🧪 Тесты и линтер"}:::warn
     X -- "упали" --> C
-    X -- "зелёные" --> PR["🔀 Pull Request"]
-    PR --> H["👀 Ревью человеком"]
+    X -- "зелёные" --> PR["🔀 Pull Request"]:::tool
+    PR --> H(["👀 Ревью человеком → merge"]):::out
+    classDef user fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#0b1f44
+    classDef ctx fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#1e0b44
+    classDef model fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#3b2300
+    classDef tool fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#052e16
+    classDef out fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#3f0420
+    classDef warn fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#450a0a
 ```
 
 Советы:
@@ -668,11 +812,18 @@ print(response.output_text)
 
 ```mermaid
 flowchart LR
-    A["🔍 Выбрать процесс<br/>≥ 2 часа в неделю"] --> B["📝 Описать шаги<br/>и критерии качества"]
-    B --> C["🛠 Собрать решение<br/>проект · GPT · агент · API"]
-    C --> D["🧪 Тест на 10 реальных<br/>примерах"]
-    D --> E["📏 Замерить<br/>время до и после"]
-    E --> F["📣 Поделиться<br/>с командой"]
+    A(["🔍 Выбрать процесс<br/>≥ 2 часа в неделю"]):::user --> B["📝 Описать шаги<br/>и критерии качества"]:::ctx
+    B --> C["🛠 Собрать решение<br/>проект · GPT · агент · API"]:::model
+    C --> D{"🧪 Тест на 10<br/>реальных примерах"}:::warn
+    D -- "плохо" --> C
+    D -- "хорошо" --> E["📏 Замерить время<br/>до и после"]:::tool
+    E --> F(["📣 Поделиться с командой"]):::out
+    classDef user fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#0b1f44
+    classDef ctx fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#1e0b44
+    classDef model fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#3b2300
+    classDef tool fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#052e16
+    classDef out fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#3f0420
+    classDef warn fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#450a0a
 ```
 
 **Критерии:** процесс описан, решение воспроизводимо (промпты и инструкции сохранены), качество проверено на реальных примерах, экономия времени посчитана.
